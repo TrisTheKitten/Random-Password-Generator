@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Custom styles */
+    body {
+      background-color: #1F2937;
+      color: #fff;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .password-output {
+      display: flex;
+      align-items: center;
+      background-color: #374151;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .password-output input {
+      flex: 1;
+      background-color: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      outline: none;
+    }
+    .password-output button {
+      background-color: #10B981;
+      border: none;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      margin-left: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .password-output button:hover {
+      background-color: #059669;
+    }
+    .password-length {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .password-length span {
+      margin-left: 1rem;
+      font-size: 1.2rem;
+    }
+    .password-length input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 0.5rem;
+      background-color: #10B981;
+      outline: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      border-radius: 0.25rem;
+    }
+    .password-length input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 1.5rem;
+      height: 1.5rem;
+      background-color: #fff;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+    .password-length input[type="range"]::-moz-range-thumb {
+      width: 1.5rem;
+      height: 1.5rem;
+      background-color: #fff;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+    .password-type {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .password-type label {
+      display: flex;
+      align-items: center;
+    }
+    .password-type input[type="radio"] {
+      appearance: none;
+      width: 3rem;
+      height: 1.5rem;
+      background-color: #4B5563;
+      border-radius: 1rem;
+      margin-right: 1rem;
+      position: relative;
+      cursor: pointer;
+    }
+    .password-type input[type="radio"]:before {
+      content: '';
+      position: absolute;
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      background-color: #fff;
+      top: 0.15rem;
+      left: 0.15rem;
+      transition: all 0.3s;
+    }
+    .password-type input[type="radio"]:checked {
+      background-color: #10B981;
+    }
+    .password-type input[type="radio"]:checked:before {
+      transform: translateX(1.5rem);
+    }
+    .settings label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .settings input[type="checkbox"] {
+      appearance: none;
+      width: 3rem;
+      height: 1.5rem;
+      background-color: #4B5563;
+      border-radius: 1rem;
+      margin-right: 1rem;
+      position: relative;
+      cursor: pointer;
+    }
+    .settings input[type="checkbox"]:before {
+      content: '';
+      position: absolute;
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      background-color: #fff;
+      top: 0.15rem;
+      left: 0.15rem;
+      transition: all 0.3s;
+    }
+    .settings input[type="checkbox"]:checked {
+      background-color: #10B981;
+    }
+    .settings input[type="checkbox"]:checked:before {
+      transform: translateX(1.5rem);
+    }
+    .generate-btn {
+      display: block;
+      width: 100%;
+      background-color: #10B981;
+      color: #fff;
+      border: none;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 2rem;
+    }
+    .generate-btn:hover {
+      background-color: #059669;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #1F2937;
+      color: #fff;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    
+    .animated {
+      animation: fadeInUp 1s ease-in-out;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-2xl font-bold mb-6">Password Generator</h1>
+    <div class="password-output">
+      <input type="text" id="password-output" readonly>
+      <button id="copy-password"><i class="fas fa-copy"></i></button>
+    </div>
+    <div class="password-length">
+      <input type="range" min="4" max="64" value="32" id="password-length" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+      <span id="password-length-output">32</span>
+    </div>
+    <div class="password-type">
+      <label>
+        <input type="radio" name="password-type" id="easy-to-say">
+        <span>Easy to Say</span>
+      </label>
+      <label>
+        <input type="radio" name="password-type" id="easy-to-read">
+        <span>Easy to Read</span>
+      </label>
+      <label>
+        <input type="radio" name="password-type" id="all-characters" checked>
+        <span>All Characters</span>
+      </label>
+    </div>
+    <div class="settings">
+      <label>
+        <input type="checkbox" id="uppercase" checked>
+        <span>Include Uppercase</span>
+      </label>
+      <label>
+        <input type="checkbox" id="lowercase" checked>
+        <span>Include Lowercase</span>
+      </label>
+      <label>
+        <input type="checkbox" id="numbers" checked>
+        <span>Include Numbers</span>
+      </label>
+      <label>
+        <input type="checkbox" id="symbols" checked>
+        <span>Include Symbols</span>
+      </label>
+    </div>
+    <button class="generate-btn" id="generate-password">Generate Password</button>
+  </div>
+  <script src="passgenerate.js"></script>
+<footer class="animated">
+  <p>Developed by Tris &copy; 2023</p>
+</footer>
+<script src="passgenerate.js"></script>
+</body>
+</html>
