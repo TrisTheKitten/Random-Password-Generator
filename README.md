@@ -8,7 +8,7 @@ Key Features:
 -Character Selection: Choose from a variety of character types, including uppercase and lowercase letters, numbers, and symbols, to create a password that is both strong and memorable. 
 -This modern web application simplifies the password creation process, allowing users to generate secure and personalized passwords with just a few clicks.
 
--You can use it directly from this link: https://random-password-generator-9gyz.vercel.app
+-You can use it directly from this link: random-password-generator-by-tris.vercel.app
 
 or
 
